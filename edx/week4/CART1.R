@@ -72,4 +72,8 @@ cpGrid = expand.grid(.cp = seq(0.01,0.5,0.01))
 
 train(Reverse ~ Circuit + Issue + Petitioner + Respondent + LowerCourt + Unconst, data = Train, method="rpart", trControl = numFolds, tuneGrid = cpGrid)
 
-StevensTreeCV = rpart(Reverse ~ Circuit + Issue + Petitioner + Respondent + LowerCourt + Unconst)
+StevensTreeCV = rpart(Reverse ~ Circuit + Issue + Petitioner + Respondent + LowerCourt + Unconst, data = Train, method="class", cp=0.19)
+PredictCV = predict(StevensTreeCV, newdata=Test, type="class")
+
+table(Test$Reverse, PredictCV)
+prp(StevensTreeCV)
